@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  
+  html {
+    @apply antialiased bg-[#000000] text-white;
+    background-image: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+  }
+  
+  body {
+    @apply overflow-hidden bg-[#000000];
+  }
+}
+
+@layer components {
+  .tetris-block {
+    @apply aspect-square relative;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+    @apply border border-white/10 rounded-sm;
+    box-shadow: inset 0 0 8px rgba(255,255,255,0.2);
+  }
+  
+  .game-container {
+    @apply relative w-full max-w-2xl mx-auto;
+    @apply backdrop-blur-2xl bg-white/5;
+    @apply rounded-3xl border border-white/10;
+    @apply shadow-[0_0_50px_rgba(255,255,255,0.05)];
+  }
+
+  .game-title {
+    @apply text-4xl font-semibold text-center;
+    @apply bg-gradient-to-r from-white/90 to-white/60;
+    @apply bg-clip-text text-transparent;
+  }
+  
+  .game-grid {
+    @apply grid grid-cols-10 gap-px;
+    @apply bg-white/5 rounded-lg;
+    @apply overflow-hidden p-px;
+    aspect-ratio: 10 / 20;
+    @apply max-h-[80vh] mx-auto;
+  }
+
+  .score-board {
+    @apply flex items-center justify-between px-6 py-4 mb-6;
+    @apply backdrop-blur-xl bg-white/5 rounded-2xl;
+    @apply border border-white/10;
+  }
+
+  .score-label {
+    @apply text-base text-white/60;
+  }
+
+  .score-value {
+    @apply text-2xl font-medium text-white/90;
+  }
+
+  .touch-control {
+    @apply fixed w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56;
+    @apply rounded-full;
+    @apply backdrop-blur-2xl bg-white/5;
+    @apply border border-white/10;
+    @apply shadow-[0_0_30px_rgba(255,255,255,0.1)];
+    @apply transition-transform duration-200;
+    @apply active:scale-95;
+    @apply bottom-8 md:top-1/2 md:-translate-y-1/2;
+  }
+
+  .touch-control-icon {
+    @apply w-8 h-8 md:w-12 md:h-12 text-white/40;
+    @apply absolute top-1/2 left-1/2;
+    @apply -translate-x-1/2 -translate-y-1/2;
+    @apply transition-opacity duration-200;
+  }
+
+  .touch-hint {
+    @apply absolute text-sm md:text-base text-white/40;
+    @apply text-center w-full bottom-14;
+  }
+
+  .row-clear {
+    animation: clear 0.3s ease-out;
+  }
+
+  @keyframes clear {
+    0% {
+      transform: scale(1);
+      filter: brightness(1);
+    }
+    50% {
+      transform: scale(1.1);
+      filter: brightness(2);
+    }
+    100% {
+      transform: scale(0);
+      filter: brightness(0);
+    }
+  }
+}
