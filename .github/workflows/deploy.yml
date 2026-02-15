@@ -12,29 +12,35 @@ permissions:
 
 jobs:
   build-and-deploy:
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
       - name: Build
         run: npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.5.0
+      - name: Init new repo in dist folder and commit generated files
+        run: |
+          cd dist
+          git init
+          git add -A
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Deploy website"
+
+      - name: Force push to destination branch
+        uses: ad-m/github-push-action@master
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
-          folder: dist
-          clean: true
-          commit-message: "Deploy website"
-          single-commit: true
-          token: ${{ github.token }}
+          force: true
+          directory: ./dist
